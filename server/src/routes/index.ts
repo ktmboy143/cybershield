@@ -18,6 +18,7 @@ import { authenticate, authorizeAdmin } from '../middleware/auth.js';
 import { analyzePhishingMessage, analyzeWebsite } from '../controllers/securityController.js';
 import { getProfile, updateProfile, getSettings, updateSettings } from '../controllers/userController.js';
 import { getLearningModules, getLearningProgress, updateLearningProgress } from '../controllers/learningController.js';
+import { getIncidentLabProgress, getIncidentLabScenarios, submitIncidentLab } from '../controllers/incidentLabController.js';
 
 const router = Router();
 
@@ -46,6 +47,9 @@ router.get('/api/analytics', authenticate, getAnalytics);
 router.get('/api/learning', authenticate, getLearningModules);
 router.get('/api/learning/progress', authenticate, getLearningProgress);
 router.patch('/api/learning/progress', authenticate, updateLearningProgress);
+router.get('/api/incident-lab/scenarios', authenticate, getIncidentLabScenarios);
+router.get('/api/incident-lab/progress', authenticate, getIncidentLabProgress);
+router.post('/api/incident-lab/scenarios/:id/submit', authenticate, submitIncidentLab);
 router.post('/api/quiz/results', authenticate, submitQuizResult);
 router.get('/api/admin/users', authenticate, authorizeAdmin, getAdminUsers);
 router.get('/api/admin/summary', authenticate, authorizeAdmin, getAdminSummary);
