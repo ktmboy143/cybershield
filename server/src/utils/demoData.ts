@@ -3,14 +3,14 @@ export const fallbackUsers = [
     id: '1',
     name: 'Admin User',
     email: 'admin@cybershield.local',
-    passwordHash: '$2a$10$7IfNw5y0J.g6E9T2U9jP2O8VarkFhQ2P4bCUdcGDoC81dV5j4rD1G',
+    passwordHash: '$2b$10$nW4kACRT4WAOJ/b95bOsj.4vqNOziNZ7ooLwa2eMPX0kDglQIcAri',
     role: 'admin' as const
   },
   {
     id: '2',
     name: 'Ava Thompson',
     email: 'user@cybershield.local',
-    passwordHash: '$2a$10$7IfNw5y0J.g6E9T2U9jP2O8VarkFhQ2P4bCUdcGDoC81dV5j4rD1G',
+    passwordHash: '$2b$10$ZPs4A0y2twJohA.SLSZD9e6sko1e6yLrqk2qhUb35h6wAtIySEUWK',
     role: 'user' as const
   }
 ];

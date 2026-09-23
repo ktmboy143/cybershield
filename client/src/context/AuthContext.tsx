@@ -18,6 +18,7 @@ type AuthContextValue = {
   isAdmin: boolean;
   login: (credentials: { email: string; password: string }) => Promise<AppUser>;
   register: (payload: { name: string; email: string; password: string }) => Promise<AppUser>;
+  updateUser: (nextUser: AppUser) => void;
   logout: () => void;
 };
 
@@ -99,6 +100,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.localStorage.removeItem(STORAGE_KEY);
   };
 
+  const updateUser = (nextUser: AppUser) => {
+    setUser(nextUser);
+    if (token) {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ token, user: nextUser }));
+    }
+  };
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
@@ -107,6 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: user?.role === 'admin',
       login,
       register,
+      updateUser,
       logout
     }),
     [user, token]

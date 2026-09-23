@@ -27,6 +27,12 @@ const userSchema = new Schema(
       type: String,
       enum: ['active', 'disabled'],
       default: 'active'
+    },
+    preferences: {
+      darkMode: { type: Boolean, default: true },
+      accentGlow: { type: Boolean, default: true },
+      riskAlerts: { type: Boolean, default: true },
+      weeklyReports: { type: Boolean, default: true }
     }
   },
   { timestamps: true }

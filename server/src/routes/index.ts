@@ -16,6 +16,7 @@ import {
 } from '../controllers/productController.js';
 import { authenticate, authorizeAdmin } from '../middleware/auth.js';
 import { analyzePhishingMessage, analyzeWebsite } from '../controllers/securityController.js';
+import { getProfile, updateProfile, getSettings, updateSettings } from '../controllers/userController.js';
 
 const router = Router();
 
@@ -26,6 +27,10 @@ router.get('/api/health', (_req, res) => {
 router.post('/api/auth/register', registerUser);
 router.post('/api/auth/login', loginUser);
 router.get('/api/auth/me', authenticate, getCurrentUser);
+router.get('/api/profile', authenticate, getProfile);
+router.patch('/api/profile', authenticate, updateProfile);
+router.get('/api/settings', authenticate, getSettings);
+router.patch('/api/settings', authenticate, updateSettings);
 
 router.get('/api/dashboard', authenticate, getDashboard);
 router.get('/api/security/posture', authenticate, getSecurityPosture);
