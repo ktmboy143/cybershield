@@ -33,6 +33,11 @@ const userSchema = new Schema(
       accentGlow: { type: Boolean, default: true },
       riskAlerts: { type: Boolean, default: true },
       weeklyReports: { type: Boolean, default: true }
+    },
+    avatarData: {
+      type: String,
+      default: '',
+      maxlength: 280000
     }
   },
   { timestamps: true }

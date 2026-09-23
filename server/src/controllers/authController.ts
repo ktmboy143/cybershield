@@ -7,7 +7,7 @@ import { fallbackUsers } from '../utils/demoData.js';
 
 const getFallbackUser = (email: string) => fallbackUsers.find((user) => user.email.toLowerCase() === email.toLowerCase());
 
-const signToken = (user: { id: string; email: string; name: string; role: 'admin' | 'user' }) =>
+const signToken = (user: { id: string; email: string; name: string; role: 'admin' | 'user'; avatarData?: string }) =>
   jwt.sign({ sub: user.id, email: user.email, name: user.name, role: user.role }, env.jwtSecret, { expiresIn: '7d' });
 
 export async function registerUser(req: Request, res: Response) {
@@ -44,7 +44,8 @@ export async function registerUser(req: Request, res: Response) {
     id: String(newUser._id),
     email: newUser.email,
     name: newUser.name,
-    role: newUser.role
+    role: newUser.role,
+    avatarData: newUser.avatarData || ''
   });
 
   return res.status(201).json({
@@ -78,7 +79,8 @@ export async function loginUser(req: Request, res: Response) {
       id: fallbackMatch.id,
       email: fallbackMatch.email,
       name: fallbackMatch.name,
-      role: fallbackMatch.role
+      role: fallbackMatch.role,
+      avatarData: ''
     });
 
     return res.json({
@@ -106,7 +108,8 @@ export async function loginUser(req: Request, res: Response) {
     id: String(dbUser._id),
     email: dbUser.email,
     name: dbUser.name,
-    role: dbUser.role
+    role: dbUser.role,
+    avatarData: dbUser.avatarData || ''
   });
 
   return res.json({

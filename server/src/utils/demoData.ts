@@ -91,7 +91,12 @@ export const fallbackAnalytics = {
 export const fallbackLearning = [
   { _id: 'lesson-1', title: 'Password Security', difficulty: 'Beginner', durationMinutes: 12, description: 'Learn unique password principles and safe habits.', category: 'Password' },
   { _id: 'lesson-2', title: 'Phishing Basics', difficulty: 'Intermediate', durationMinutes: 15, description: 'Recognize urgency, impersonation, and suspicious asks.', category: 'Phishing' },
-  { _id: 'lesson-3', title: 'MFA Essentials', difficulty: 'Beginner', durationMinutes: 10, description: 'Understand how MFA blocks many account takeover attempts.', category: 'Identity' }
+  { _id: 'lesson-3', title: 'MFA Essentials', difficulty: 'Beginner', durationMinutes: 10, description: 'Understand how MFA blocks many account takeover attempts.', category: 'Identity' },
+  { _id: 'lesson-4', title: 'Web Security', difficulty: 'Intermediate', durationMinutes: 18, description: 'Review HTTPS, headers, and safe browsing patterns.', category: 'Web' },
+  { _id: 'lesson-5', title: 'Social Engineering', difficulty: 'Intermediate', durationMinutes: 14, description: 'Recognize manipulation tactics used against people.', category: 'Awareness' },
+  { _id: 'lesson-6', title: 'Malware & Ransomware', difficulty: 'Advanced', durationMinutes: 20, description: 'Learn how malicious software spreads and how to recover safely.', category: 'Threats' },
+  { _id: 'lesson-7', title: 'Data Privacy', difficulty: 'Beginner', durationMinutes: 11, description: 'Reduce unnecessary sharing and protect personal information.', category: 'Privacy' },
+  { _id: 'lesson-8', title: 'Device Security', difficulty: 'Intermediate', durationMinutes: 16, description: 'Harden laptops and phones against common risks.', category: 'Devices' }
 ];
 
 export const fallbackAdminUsers = [

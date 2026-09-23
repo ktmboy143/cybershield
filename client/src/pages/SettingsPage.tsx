@@ -1,67 +1,13 @@
 import { AlertCircle, Bell, CheckCircle2, Moon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import Layout from '../components/Layout';
-import { useAuth } from '../context/AuthContext';
-import { apiFetch } from '../lib/api';
-
-type Preferences = {
-  darkMode: boolean;
-  accentGlow: boolean;
-  riskAlerts: boolean;
-  weeklyReports: boolean;
-};
-
-const defaultPreferences: Preferences = { darkMode: true, accentGlow: true, riskAlerts: true, weeklyReports: true };
 
 function SettingsPage() {
-  const { token } = useAuth();
-  const [preferences, setPreferences] = useState<Preferences>(defaultPreferences);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const loadSettings = async () => {
-      try {
-        const response = await apiFetch<{ preferences: Preferences }>('/api/settings', {}, token ?? undefined);
-        setPreferences({ ...defaultPreferences, ...response.preferences });
-      } catch (loadError) {
-        setError(loadError instanceof Error ? loadError.message : 'Unable to load your settings.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (token) loadSettings();
-    else setIsLoading(false);
-  }, [token]);
-
-  const updatePreference = (key: keyof Preferences, value: boolean) => {
-    setMessage('');
-    setError('');
-    setPreferences((current) => ({ ...current, [key]: value }));
-  };
+  const { preferences, isLoading, isSaving, error, message, updatePreference, savePreferences } = useTheme();
 
   const handleSave = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setMessage('');
-    setError('');
-
-    try {
-      setIsSaving(true);
-      const response = await apiFetch<{ preferences: Preferences }>(
-        '/api/settings',
-        { method: 'PATCH', body: JSON.stringify(preferences) },
-        token ?? undefined
-      );
-      setPreferences({ ...defaultPreferences, ...response.preferences });
-      setMessage('Settings saved successfully.');
-    } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Unable to save your settings.');
-    } finally {
-      setIsSaving(false);
-    }
+    await savePreferences();
   };
 
   return (

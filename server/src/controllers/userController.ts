@@ -17,14 +17,16 @@ type ProfileRecord = {
   email?: string;
   role?: string;
   preferences?: Partial<typeof defaultPreferences>;
+  avatarData?: string;
 };
 
-function safeUser(user: { _id?: unknown; id?: unknown; name?: string; email?: string; role?: string }) {
+function safeUser(user: { _id?: unknown; id?: unknown; name?: string; email?: string; role?: string; avatarData?: string }) {
   return {
     id: String(user._id ?? user.id ?? ''),
     name: user.name || '',
     email: user.email || '',
-    role: user.role || 'user'
+    role: user.role || 'user',
+    avatarData: user.avatarData || ''
   };
 }
 
@@ -39,7 +41,7 @@ export async function getProfile(req: AuthenticatedRequest, res: Response) {
     return res.json({ user: safeUser(fallbackUser) });
   }
 
-  const user = await User.findById(userId).select('name email role').lean<ProfileRecord>();
+  const user = await User.findById(userId).select('name email role avatarData').lean<ProfileRecord>();
   if (!user) {
     return res.status(404).json({ message: 'Profile not found.' });
   }
@@ -51,6 +53,7 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response) {
   const userId = req.user?.id;
   const name = typeof req.body?.name === 'string' ? req.body.name.trim() : '';
   const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+  const avatarData = req.body?.avatarData === undefined ? undefined : typeof req.body.avatarData === 'string' ? req.body.avatarData : '';
 
   if (!userId) {
     return res.status(401).json({ message: 'Authentication required.' });
@@ -61,6 +64,12 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response) {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ message: 'Enter a valid email address.' });
   }
+  if (avatarData !== undefined && avatarData.length > 280000) {
+    return res.status(400).json({ message: 'Profile photo is too large.' });
+  }
+  if (avatarData !== undefined && avatarData && !/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/.test(avatarData)) {
+    return res.status(400).json({ message: 'Profile photo must be a JPEG, PNG, or WebP image.' });
+  }
   if (fallbackUsers.some((user) => user.id === userId)) {
     return res.status(503).json({ message: 'Profile updates require a connected account database.' });
   }
@@ -70,8 +79,9 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response) {
     return res.status(409).json({ message: 'An account with this email already exists.' });
   }
 
-  const user = await User.findByIdAndUpdate(userId, { name, email }, { new: true, runValidators: true })
-    .select('name email role')
+  const updates = avatarData === undefined ? { name, email } : { name, email, avatarData };
+  const user = await User.findByIdAndUpdate(userId, updates, { new: true, runValidators: true })
+    .select('name email role avatarData')
     .lean<ProfileRecord>();
   if (!user) {
     return res.status(404).json({ message: 'Profile not found.' });

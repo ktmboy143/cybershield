@@ -31,6 +31,7 @@ const learningModuleSchema = new Schema(
 
 export type LearningModuleDocument = InferSchemaType<typeof learningModuleSchema>;
 
-const LearningModule = mongoose.models.LearningModule || mongoose.model('LearningModule', learningModuleSchema);
+const LearningModule = mongoose.models.LearningModule as mongoose.Model<LearningModuleDocument> ||
+  mongoose.model<LearningModuleDocument>('LearningModule', learningModuleSchema);
 
 export default LearningModule;

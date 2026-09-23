@@ -107,7 +107,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   Security Score: <span className="font-semibold text-cyan-300">82/100</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-2 py-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-300">{initials}</div>
+                  {user?.avatarData ? <img src={user.avatarData} alt="" className="h-8 w-8 rounded-full object-cover" /> : <div className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-300">{initials}</div>}
                   <div className="hidden text-left text-sm sm:block">
                     <p className="font-medium text-white">{user?.name || 'Ava Thompson'}</p>
                     <p className="text-xs text-slate-400">{user?.role === 'admin' ? 'Administrator' : 'Analyst'}</p>

@@ -9,6 +9,7 @@ export type AppUser = {
   name: string;
   email: string;
   role: UserRole;
+  avatarData?: string;
 };
 
 type AuthContextValue = {
