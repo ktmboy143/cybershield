@@ -80,7 +80,7 @@ function LoginPage() {
               <input type="checkbox" className="rounded border-slate-700 bg-slate-950" />
               Remember me
             </label>
-            <button type="button" className="text-cyan-300 hover:text-cyan-200">Forgot password?</button>
+            <button type="button" onClick={() => setError('Password reset is not configured yet. Contact an administrator for help.')} className="text-cyan-300 hover:text-cyan-200">Forgot password?</button>
           </div>
 
           {error ? (

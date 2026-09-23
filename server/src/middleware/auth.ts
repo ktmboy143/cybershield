@@ -40,7 +40,7 @@ export async function authenticate(req: AuthenticatedRequest, res: Response, nex
     const payload = jwt.verify(token, env.jwtSecret) as { sub?: string; email?: string; role?: string; name?: string };
 
     if (payload.sub) {
-      const fallbackUser = env.nodeEnv === 'production' ? undefined : getUserFromFallback(payload.sub);
+      const fallbackUser = env.enableDemoAuth ? getUserFromFallback(payload.sub) : undefined;
       if (fallbackUser) {
         req.user = {
           id: fallbackUser.id,
@@ -59,7 +59,7 @@ export async function authenticate(req: AuthenticatedRequest, res: Response, nex
     }
 
     if (payload.email) {
-      const fallbackUser = env.nodeEnv === 'production' ? undefined : getUserFromFallback(payload.email);
+      const fallbackUser = env.enableDemoAuth ? getUserFromFallback(payload.email) : undefined;
       if (fallbackUser) {
         req.user = {
           id: fallbackUser.id,

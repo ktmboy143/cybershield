@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ShieldCheck, LayoutDashboard, KeyRound, ShieldAlert, Globe, FileSearch, BarChart3, FileText, BookOpen, Settings, UserCircle, LogOut, Menu, ArrowRight } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const items = [
@@ -23,6 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const visibleItems = isAdmin ? items : items.filter((item) => item.label !== 'Admin');
 
   const handleLogout = () => {
@@ -91,7 +93,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/70 backdrop-blur-xl">
             <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
               <div className="flex items-center gap-3">
-                <button className="rounded-xl border border-slate-700 p-2 lg:hidden">
+                <button type="button" onClick={() => setIsMenuOpen((open) => !open)} aria-label="Toggle navigation menu" className="rounded-xl border border-slate-700 p-2 lg:hidden">
                   <Menu className="h-5 w-5" />
                 </button>
                 <div>
@@ -113,6 +115,22 @@ export default function Layout({ children }: { children: ReactNode }) {
                 </div>
               </div>
             </div>
+            {isMenuOpen ? (
+              <nav className="border-t border-slate-800 px-4 py-3 lg:hidden">
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {visibleItems.map(({ label, to, icon: Icon }) => (
+                    <Link key={label} to={to} onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-slate-300 hover:bg-slate-800/80 hover:text-white">
+                      <Icon className="h-4 w-4" />
+                      {label}
+                    </Link>
+                  ))}
+                  <button type="button" onClick={handleLogout} className="flex items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-slate-300 hover:bg-slate-800/80 hover:text-white">
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </button>
+                </div>
+              </nav>
+            ) : null}
           </header>
 
           <motion.main

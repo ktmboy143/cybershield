@@ -13,7 +13,7 @@ function AdminPage() {
     const loadData = async () => {
       try {
         const summary = await apiFetch<{ totalUsers: number; activeUsers: number; reports: number; exercises: number }>(
-          '/api/admin/users',
+          '/api/admin/summary',
           {},
           token ?? undefined
         );

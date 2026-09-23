@@ -11,9 +11,11 @@ import {
   getAnalytics,
   getLearning,
   submitQuizResult,
-  getAdminUsers
+  getAdminUsers,
+  getAdminSummary
 } from '../controllers/productController.js';
 import { authenticate, authorizeAdmin } from '../middleware/auth.js';
+import { analyzePhishingMessage, analyzeWebsite } from '../controllers/securityController.js';
 
 const router = Router();
 
@@ -27,6 +29,8 @@ router.get('/api/auth/me', authenticate, getCurrentUser);
 
 router.get('/api/dashboard', authenticate, getDashboard);
 router.get('/api/security/posture', authenticate, getSecurityPosture);
+router.post('/api/security/phishing', authenticate, analyzePhishingMessage);
+router.post('/api/security/website', authenticate, analyzeWebsite);
 router.post('/api/security/reports', authenticate, createSecurityReport);
 router.get('/api/reports', authenticate, getReports);
 router.get('/api/incidents', authenticate, getIncidents);
@@ -36,5 +40,6 @@ router.get('/api/analytics', authenticate, getAnalytics);
 router.get('/api/learning', authenticate, getLearning);
 router.post('/api/quiz/results', authenticate, submitQuizResult);
 router.get('/api/admin/users', authenticate, authorizeAdmin, getAdminUsers);
+router.get('/api/admin/summary', authenticate, authorizeAdmin, getAdminSummary);
 
 export default router;

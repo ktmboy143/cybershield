@@ -22,7 +22,7 @@ export async function registerUser(req: Request, res: Response) {
   }
 
   const normalizedEmail = String(email).trim().toLowerCase();
-  const fallbackMatch = env.nodeEnv === 'production' ? undefined : getFallbackUser(normalizedEmail);
+  const fallbackMatch = env.enableDemoAuth ? getFallbackUser(normalizedEmail) : undefined;
   if (fallbackMatch) {
     return res.status(409).json({ message: 'An account with this email already exists.' });
   }
@@ -67,9 +67,9 @@ export async function loginUser(req: Request, res: Response) {
 
   const normalizedEmail = String(email).trim().toLowerCase();
 
-  const fallbackMatch = env.nodeEnv === 'production' ? undefined : getFallbackUser(normalizedEmail);
+  const fallbackMatch = env.enableDemoAuth ? getFallbackUser(normalizedEmail) : undefined;
   if (fallbackMatch) {
-    const isValid = fallbackMatch.email === normalizedEmail && (normalizedEmail.includes('admin') ? String(password) === 'Admin123!' : String(password) === 'User123!');
+    const isValid = fallbackMatch.email === normalizedEmail && await bcrypt.compare(String(password), fallbackMatch.passwordHash);
     if (!isValid) {
       return res.status(401).json({ message: 'Invalid credentials.' });
     }

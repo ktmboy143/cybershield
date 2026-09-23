@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { API_BASE } from '../lib/api';
 
@@ -43,6 +43,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const storedAuth = readStoredAuth();
   const [user, setUser] = useState<AppUser | null>(storedAuth?.user ?? null);
   const [token, setToken] = useState<string | null>(storedAuth?.token ?? null);
+
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      setUser(null);
+      setToken(null);
+      window.localStorage.removeItem(STORAGE_KEY);
+    };
+
+    window.addEventListener('cybershield:auth-expired', handleAuthExpired);
+    return () => window.removeEventListener('cybershield:auth-expired', handleAuthExpired);
+  }, []);
 
   const persistSession = (nextToken: string, nextUser: AppUser) => {
     setToken(nextToken);

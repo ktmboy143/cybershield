@@ -205,3 +205,19 @@ export async function getAdminUsers(_req: Request, res: Response) {
     status: user.status || 'active'
   })));
 }
+
+export async function getAdminSummary(_req: Request, res: Response) {
+  const [totalUsers, activeUsers, reports, exercises] = await Promise.all([
+    User.countDocuments(),
+    User.countDocuments({ status: 'active' }),
+    SecurityReport.countDocuments(),
+    QuizResult.countDocuments()
+  ]);
+
+  return res.json({
+    totalUsers: totalUsers || fallbackAdminUsers.length,
+    activeUsers: activeUsers || fallbackAdminUsers.length,
+    reports: reports || fallbackReports.length,
+    exercises: exercises || 0
+  });
+}
