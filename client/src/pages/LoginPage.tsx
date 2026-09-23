@@ -2,6 +2,7 @@ import { AlertCircle, KeyRound, Mail, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Seo from '../components/Seo';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#050b16] p-6">
+      <Seo title="Cyber Shield – Sign In" description="Sign in to your private Cyber Shield security center." noIndex />
       <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl">
         <div className="mb-8 flex items-center justify-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-cyan-400/30 bg-cyan-500/10">

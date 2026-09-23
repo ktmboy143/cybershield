@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Seo from './Seo';
 
 const items = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
@@ -26,6 +27,21 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { user, isAdmin, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const visibleItems = isAdmin ? items : items.filter((item) => item.label !== 'Admin');
+  const pageSeo: Record<string, { title: string; description: string }> = {
+    '/dashboard': { title: 'Cyber Shield – Dashboard', description: 'Your private Cyber Shield security overview and account activity.' },
+    '/security-posture': { title: 'Cyber Shield – Security Posture', description: 'Review your private Cyber Shield security posture and recommendations.' },
+    '/password-security': { title: 'Cyber Shield – Password Security', description: 'Review password safety guidance in your private Cyber Shield account.' },
+    '/phishing': { title: 'Cyber Shield – Phishing Awareness', description: 'Use the private Cyber Shield phishing awareness analyzer and review defensive guidance.' },
+    '/website-security': { title: 'Cyber Shield – Web Security', description: 'Use the private Cyber Shield website security checker for defensive review.' },
+    '/incident-lab': { title: 'Cyber Shield – Incident Lab', description: 'Practice fictional cybersecurity incident investigations in the private Cyber Shield Incident Lab.' },
+    '/analytics': { title: 'Cyber Shield – Security Analytics', description: 'Review private Cyber Shield security trends and analytics.' },
+    '/reports': { title: 'Cyber Shield – Security Reports', description: 'Review private Cyber Shield security reports.' },
+    '/learning': { title: 'Cyber Shield – Learning Center', description: 'Study cybersecurity lessons and track private learning progress in Cyber Shield.' },
+    '/profile': { title: 'Cyber Shield – Profile', description: 'Manage your private Cyber Shield profile.' },
+    '/settings': { title: 'Cyber Shield – Settings', description: 'Manage your private Cyber Shield account settings.' },
+    '/admin': { title: 'Cyber Shield – Admin', description: 'Private Cyber Shield administration area.' }
+  };
+  const seo = pageSeo[location.pathname] || pageSeo['/dashboard'];
 
   const handleLogout = () => {
     logout();
@@ -41,6 +57,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[#050b16] text-slate-200">
+      <Seo title={seo.title} description={seo.description} noIndex />
       <div className="mx-auto flex min-h-screen max-w-[1600px]">
         <aside className="hidden w-72 border-r border-slate-800 bg-slate-950/80 p-5 lg:flex lg:flex-col">
           <div className="mb-8 flex items-center gap-3 px-2">

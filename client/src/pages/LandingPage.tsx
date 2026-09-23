@@ -24,6 +24,7 @@ import {
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { navItems } from '../data/sample';
+import Seo from '../components/Seo';
 
 const howItWorks = [
   {
@@ -130,6 +131,10 @@ const securityNodes = [
 function LandingPage() {
   return (
     <div className="min-h-screen bg-[#050b16] text-slate-200">
+      <Seo
+        title="Cyber Shield – Learn Cybersecurity"
+        description="Learn online safety, phishing defense, web security, incident investigation, and practical defensive cybersecurity habits with Cyber Shield."
+      />
       <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/30 bg-cyan-500/10">

@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Disallow: /security-posture
+Disallow: /password-security
+Disallow: /phishing
+Disallow: /website-security
+Disallow: /incident-lab
+Disallow: /analytics
+Disallow: /reports
+Disallow: /learning
+Disallow: /profile
+Disallow: /settings
+Disallow: /admin
+
+Sitemap: https://cybershield-fz8z.onrender.com/sitemap.xml
