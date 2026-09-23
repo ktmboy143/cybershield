@@ -1,0 +1,40 @@
+import { Router } from 'express';
+import { loginUser, registerUser, getCurrentUser } from '../controllers/authController.js';
+import {
+  getDashboard,
+  getSecurityPosture,
+  createSecurityReport,
+  getReports,
+  getIncidents,
+  getIncidentById,
+  addIncidentNote,
+  getAnalytics,
+  getLearning,
+  submitQuizResult,
+  getAdminUsers
+} from '../controllers/productController.js';
+import { authenticate, authorizeAdmin } from '../middleware/auth.js';
+
+const router = Router();
+
+router.get('/api/health', (_req, res) => {
+  res.json({ ok: true, message: 'CYBERSHIELD backend is running' });
+});
+
+router.post('/api/auth/register', registerUser);
+router.post('/api/auth/login', loginUser);
+router.get('/api/auth/me', authenticate, getCurrentUser);
+
+router.get('/api/dashboard', authenticate, getDashboard);
+router.get('/api/security/posture', authenticate, getSecurityPosture);
+router.post('/api/security/reports', authenticate, createSecurityReport);
+router.get('/api/reports', authenticate, getReports);
+router.get('/api/incidents', authenticate, getIncidents);
+router.get('/api/incidents/:id', authenticate, getIncidentById);
+router.post('/api/incidents/:id/notes', authenticate, addIncidentNote);
+router.get('/api/analytics', authenticate, getAnalytics);
+router.get('/api/learning', authenticate, getLearning);
+router.post('/api/quiz/results', authenticate, submitQuizResult);
+router.get('/api/admin/users', authenticate, authorizeAdmin, getAdminUsers);
+
+export default router;
